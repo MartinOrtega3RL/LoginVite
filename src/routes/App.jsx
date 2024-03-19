@@ -1,7 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../container/Home";
+import Home from "../container/Home.jsx";
+
 
 export default function App() {
   return (
