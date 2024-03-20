@@ -61,17 +61,16 @@ form.sign-in-form {
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: 1.3rem;
   color: #444;
-  margin-bottom: 10px;
 }
 
 .input-field {
   max-width: 380px;
   width: 100%;
   background-color: #f0f0f0;
-  margin: 10px 0;
-  height: 55px;
+  margin: 5px 0;
+  height: 53px;
   border-radius: 55px;
   display: grid;
   grid-template-columns: 15% 85%;
@@ -96,6 +95,11 @@ form.sign-in-form {
   font-weight: 600;
   font-size: 1.1rem;
   color: #333;
+}
+
+.Error-Message-Register{
+  color: red;
+  font-size: smaller;
 }
 
 .input-field input::placeholder {
@@ -376,7 +380,7 @@ form.sign-in-form {
 
 @media (max-width: 570px) {
   form {
-    padding: 0 1.5rem;
+    height: 100%;
   }
 
   .image {
@@ -386,16 +390,48 @@ form.sign-in-form {
     padding: 0.5rem 1rem;
   }
   .container {
-    padding: 1.5rem;
+    width: 100%;
   }
 
   .container:before {
     bottom: 72%;
     left: 50%;
   }
-
   .container.sign-up-mode:before {
     bottom: 28%;
     left: 50%;
+  }
+}
+
+@media (max-width: 390px) {
+  .input-field {
+    max-width: 300px; /* Reducimos el ancho máximo de los campos de entrada */
+  }
+
+  .input-field input {
+    width: calc(100% - 40px); /* Ajustamos el ancho del input */
+  }
+
+  .input-field i {
+    font-size: 1rem; /* Reducimos el tamaño del ícono */
+  }
+
+  .Error-Message-Register {
+    font-size: 9px; /* Reducimos el tamaño del mensaje de error */
+    bottom: -10px; /* Ajustamos la posición del mensaje de error */
+  }
+
+  .social-text {
+    font-size: 0.8rem; /* Reducimos el tamaño del texto social */
+  }
+
+  .social-media {
+    margin-top: 5px; /* Añadimos un pequeño margen arriba */
+  }
+
+  .btn.transparent {
+    width: 100px; /* Reducimos el ancho del botón */
+    height: 30px; /* Reducimos la altura del botón */
+    font-size: 0.7rem; /* Reducimos el tamaño del texto del botón */
   }
 }
