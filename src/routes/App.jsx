@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../container/Home.jsx";
 import Login from "../components/Login.jsx";
-import {Auth0Provider} from "@auth0/auth0-react";
 
 
 

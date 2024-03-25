@@ -97,6 +97,20 @@ form.sign-in-form {
   color: #333;
 }
 
+.input-field .toggle-password {
+  position: absolute; /* Posicionamos el botón de manera absoluta */
+  right:-7rem; /* Lo alineamos a la derecha */
+  top: 60%; /* Lo posicionamos verticalmente en el centro */
+  transform: translateY(-50%); /* Lo ajustamos verticalmente */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.input-field .toggle-password i {
+  color: #000000; /* Color del ícono */
+}
+
 .Error-Message-Register{
   color: red;
   font-size: smaller;

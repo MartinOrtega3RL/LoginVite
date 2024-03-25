@@ -3,25 +3,24 @@ import "../assets/Style/Estilo.css";
 import logo from "../assets/log.svg";
 import reg from "../assets/register.jpg";
 import { useState } from "react";
-import { urlFrontend } from "../config";
 import auth0 from "auth0-js";
+import Ath0Config from "../auth0-config";
 
-const auth0Config = {
-  domain: "testerun.us.auth0.com",
-  clientID: "qsyvSMj1lcb68hl1xJj2D0awZpi6KZuk",
-  redirectUri: "https://9gr6q6nk-5174.brs.devtunnels.ms/", // Cambia esto según tu configuración
-  responseType: "code",
-};
-
-const webAuth = new auth0.WebAuth(auth0Config);
+const webAuth = new auth0.WebAuth(Ath0Config);
 
 export default function Login() {
+  const [accessToken, setAccessToken] = useState(null); // Estado para almacenar el token de acceso
   const {
     register: registerSignIn,
     handleSubmit: handleSubmitSignIn,
     reset: resetSignIn,
   } = useForm();
 
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar si la contraseña debe mostrarse
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Cambiar el estado para mostrar u ocultar la contraseña
+  };
   const {
     register: registerSignUp,
     handleSubmit: handleSubmitSignUp,
@@ -32,41 +31,44 @@ export default function Login() {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const handleSignIn = (data) => {
-    const {Email,Contraseña}=data;
+    const { Email, Contraseña } = data;
 
-    console.log(Email)
+    console.log(Email);
 
-    webAuth.login({
-      realm: "Usuarios-Login",
-      email: Email,
-      password: Contraseña,
-    }, (err)=>{
-      if (err){
-        console.log("Error al iniciar Sesion en Auth0",err)
-
-      } else{
-        alert("Inicio de sesion Exitoso")
+    webAuth.login(
+      {
+        realm: "Usuarios-Login",
+        email: Email,
+        password: Contraseña,
+      },
+      (err, authResult) => {
+        if (err) {
+          console.log("Error al iniciar sesión en Auth0", err);
+        } else {
+          // Almacenar el token de acceso en sessionStorage
+          sessionStorage.setItem("accessToken", authResult.accessToken);
+          console.log("Inicio de sesión exitoso", authResult);
+          // Aquí puedes redirigir a otra página si lo deseas
+        }
       }
-    })
+    );
   };
 
   const [errorEmail, setErrorEmail] = useState("");
 
   const renderErrorMessage = (fieldName) => {
     if (errors[fieldName]) {
-      return <span className="Error-Message-Register">{errors[fieldName].message}</span>;
+      return (
+        <span className="Error-Message-Register">
+          {errors[fieldName].message}
+        </span>
+      );
     }
     return null;
   };
 
   const handleSignUp = (data) => {
-
-    const nombre = data.Nombre;
-    const apellido = data.Apellido;
-    const cuil = data.Cuil;
-    const telefono = data.Telefono;
-    const email = data.Email;
-    const password = data.Contraseña;
+    const { nombre, apellido, cuil, telefono, email, password } = data;
 
     console.log(data);
 
@@ -100,6 +102,8 @@ export default function Login() {
 
   const toggleSignUpMode = () => {
     setIsSignUpMode(!isSignUpMode);
+    setShowPassword(!showPassword)
+
   };
 
   return (
@@ -122,10 +126,21 @@ export default function Login() {
             <div className="input-field">
               <i className="fas fa-lock fa-lg"></i>
               <input
-                type="password"
+                 type={showPassword ? "text" : "password"} // Cambiar el tipo de entrada según el estado de showPassword
                 placeholder="Contraseña"
                 {...registerSignIn("Contraseña")}
               />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fas ${
+                    showPassword ? "fa-eye-slash" : "fa-eye"
+                  } fa-lg`}
+                ></i>
+              </button>
             </div>
             <input type="submit" value="Iniciar Sesion" className="btn solid" />
             <p className="social-text">
@@ -246,15 +261,30 @@ export default function Login() {
             <div className="input-field">
               <i className="fas fa-lock fa-lg"></i>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} // Cambiar el tipo de entrada según el estado de showPassword
                 placeholder="Contraseña"
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
                 title="La contraseña debe tener al menos 8 caracteres de longitud y contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (por ejemplo, !@#$%^&*)."
                 {...registerSignUp("Contraseña", {
                   required: { value: true, message: "Contraseña Requerida" },
                 })}
+                
               />
+
+<button
+                type="button"
+                className="toggle-password"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fas ${
+                    showPassword ? "fa-eye-slash" : "fa-eye"
+                  } fa-lg`}
+                ></i>
+              </button>
+             
             </div>
+            
             {renderErrorMessage("Contraseña")}
             <input type="submit" className="btn" value="Registrarse" />
             <p className="social-text">
