@@ -9,9 +9,8 @@ import auth0 from "auth0-js";
 const auth0Config = {
   domain: "testerun.us.auth0.com",
   clientID: "qsyvSMj1lcb68hl1xJj2D0awZpi6KZuk",
-  redirectUri: `${urlFrontend}`, // Cambia esto según tu configuración
-  responseType: "token id_token",
-  scope: "openid profile email",
+  redirectUri: "https://9gr6q6nk-5174.brs.devtunnels.ms/", // Cambia esto según tu configuración
+  responseType: "code",
 };
 
 const webAuth = new auth0.WebAuth(auth0Config);
@@ -29,10 +28,26 @@ export default function Login() {
     reset: resetSignUp,
     formState: { errors },
   } = useForm();
+
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const handleSignIn = (data) => {
-    console.log("Nombre Login, por si diferencia", data.Nombre);
+    const {Email,Contraseña}=data;
+
+    console.log(Email)
+
+    webAuth.login({
+      realm: "Usuarios-Login",
+      email: Email,
+      password: Contraseña,
+    }, (err)=>{
+      if (err){
+        console.log("Error al iniciar Sesion en Auth0",err)
+
+      } else{
+        alert("Inicio de sesion Exitoso")
+      }
+    })
   };
 
   const [errorEmail, setErrorEmail] = useState("");
@@ -45,6 +60,7 @@ export default function Login() {
   };
 
   const handleSignUp = (data) => {
+
     const nombre = data.Nombre;
     const apellido = data.Apellido;
     const cuil = data.Cuil;
@@ -99,8 +115,8 @@ export default function Login() {
               <i className="fas fa-user fa-lg"></i>
               <input
                 type="text"
-                placeholder="Nombre"
-                {...registerSignIn("Nombre")}
+                placeholder="Email"
+                {...registerSignIn("Email")}
               />
             </div>
             <div className="input-field">
