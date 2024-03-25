@@ -6,6 +6,8 @@ import { useState } from "react";
 import auth0 from "auth0-js";
 import Ath0Config from "../Auth0Config";
 
+
+
 const webAuth = new auth0.WebAuth(Ath0Config);
 
 export default function Login() {
@@ -59,21 +61,21 @@ export default function Login() {
   };
 
   const handleSignUp = (data) => {
-    const { nombre, apellido, cuil, telefono, email, password } = data;
+    const { Nombre, Apellido, Cuil, Telefono, Email, Contraseña } = data;
 
     console.log(data);
 
     webAuth.signup(
       {
-        email,
-        password,
+        email:Email,
+        password:Contraseña,
         connection: "Usuarios-Login", // Cambia esto según tu configuración de Auth0
         user_metadata: {
-          nombre,
-          apellido,
-          cuil,
+          nombre:Nombre,
+          apellido:Apellido,
+          cuil:Cuil,
           rol: "Usuario",
-          telefono,
+          telefono:Telefono,
         },
       },
       (err) => {
