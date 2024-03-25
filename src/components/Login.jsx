@@ -3,17 +3,10 @@ import "../assets/Style/Estilo.css";
 import logo from "../assets/log.svg";
 import reg from "../assets/register.jpg";
 import { useState } from "react";
-import { urlFrontend } from "../config";
 import auth0 from "auth0-js";
+import Ath0Config from "../Auth0Config";
 
-const auth0Config = {
-  domain: "testerun.us.auth0.com",
-  clientID: "qsyvSMj1lcb68hl1xJj2D0awZpi6KZuk",
-  redirectUri: "https://9gr6q6nk-5174.brs.devtunnels.ms/", // Cambia esto según tu configuración
-  responseType: "code",
-};
-
-const webAuth = new auth0.WebAuth(auth0Config);
+const webAuth = new auth0.WebAuth(Ath0Config);
 
 export default function Login() {
   const {
@@ -32,41 +25,41 @@ export default function Login() {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const handleSignIn = (data) => {
-    const {Email,Contraseña}=data;
+    const { Email, Contraseña } = data;
 
-    console.log(Email)
+    console.log(Email);
 
-    webAuth.login({
-      realm: "Usuarios-Login",
-      email: Email,
-      password: Contraseña,
-    }, (err)=>{
-      if (err){
-        console.log("Error al iniciar Sesion en Auth0",err)
-
-      } else{
-        alert("Inicio de sesion Exitoso")
+    webAuth.login(
+      {
+        realm: "Usuarios-Login",
+        email: Email,
+        password: Contraseña,
+      },
+      (err) => {
+        if (err) {
+          console.log("Error al iniciar Sesion en Auth0", err);
+        } else {
+          alert("Inicio de sesion Exitoso");
+        }
       }
-    })
+    );
   };
 
   const [errorEmail, setErrorEmail] = useState("");
 
   const renderErrorMessage = (fieldName) => {
     if (errors[fieldName]) {
-      return <span className="Error-Message-Register">{errors[fieldName].message}</span>;
+      return (
+        <span className="Error-Message-Register">
+          {errors[fieldName].message}
+        </span>
+      );
     }
     return null;
   };
 
   const handleSignUp = (data) => {
-
-    const nombre = data.Nombre;
-    const apellido = data.Apellido;
-    const cuil = data.Cuil;
-    const telefono = data.Telefono;
-    const email = data.Email;
-    const password = data.Contraseña;
+    const { nombre, apellido, cuil, telefono, email, password } = data;
 
     console.log(data);
 

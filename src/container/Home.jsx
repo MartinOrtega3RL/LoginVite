@@ -1,22 +1,15 @@
 import React from "react";
 import auth0 from "auth0-js";
+import Ath0Config from "../Auth0Config";
 
-const auth0Config = {
-  domain: "testerun.us.auth0.com",
-  clientID: "qsyvSMj1lcb68hl1xJj2D0awZpi6KZuk",
-  redirectUri: `${urlFrontend}`, // Cambia esto según tu configuración
-  responseType: "token id_token",
-  scope: "openid profile email",
-};
-
-const webAuth = new auth0.WebAuth(auth0Config);
+const webAuth = new auth0.WebAuth(Ath0Config);
 
 const Home = () => {
 
   const handleSignOut = () => {
     webAuth.logout({
-      returnTo: `${urlFrontend}`, // URL a la que redirigir después de cerrar sesión
-      clientID: auth0Config.clientID,
+      returnTo: "http://localhost:5173/Login", // URL a la que redirigir después de cerrar sesión
+      clientID: Ath0Config.clientID,
     });
   };
 
@@ -25,7 +18,7 @@ const Home = () => {
     <>
       <h1>Juan</h1>
 
-      <button onClick={handleSignOut()}>Cerrar Sesion</button>
+      <button onClick={handleSignOut}>Cerrar Sesion</button>
     </>
   );
 };
