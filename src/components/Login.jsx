@@ -6,8 +6,6 @@ import { useState } from "react";
 import auth0 from "auth0-js";
 import Ath0Config from "../Auth0Config";
 
-
-
 const webAuth = new auth0.WebAuth(Ath0Config);
 
 export default function Login() {
@@ -25,6 +23,8 @@ export default function Login() {
   } = useForm();
 
   const [isSignUpMode, setIsSignUpMode] = useState(false);
+  const [errorEmail, setErrorEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar si la contraseña debe mostrarse
 
   const handleSignIn = (data) => {
     const { Email, Contraseña } = data;
@@ -47,8 +47,6 @@ export default function Login() {
     );
   };
 
-  const [errorEmail, setErrorEmail] = useState("");
-
   const renderErrorMessage = (fieldName) => {
     if (errors[fieldName]) {
       return (
@@ -67,15 +65,15 @@ export default function Login() {
 
     webAuth.signup(
       {
-        email:Email,
-        password:Contraseña,
+        email: Email,
+        password: Contraseña,
         connection: "Usuarios-Login", // Cambia esto según tu configuración de Auth0
         user_metadata: {
-          nombre:Nombre,
-          apellido:Apellido,
-          cuil:Cuil,
+          nombre: Nombre,
+          apellido: Apellido,
+          cuil: Cuil,
           rol: "Usuario",
-          telefono:Telefono,
+          telefono: Telefono,
         },
       },
       (err) => {
@@ -95,6 +93,11 @@ export default function Login() {
 
   const toggleSignUpMode = () => {
     setIsSignUpMode(!isSignUpMode);
+    setShowPassword(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Cambiar el estado para mostrar u ocultar la contraseña
   };
 
   return (
@@ -117,10 +120,21 @@ export default function Login() {
             <div className="input-field">
               <i className="fas fa-lock fa-lg"></i>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} // Cambiar el tipo de entrada según el estado de showPassword
                 placeholder="Contraseña"
                 {...registerSignIn("Contraseña")}
               />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fas ${
+                    showPassword ? "fa-eye-slash" : "fa-eye"
+                  } fa-lg`}
+                ></i>
+              </button>
             </div>
             <input type="submit" value="Iniciar Sesion" className="btn solid" />
             <p className="social-text">
@@ -241,7 +255,7 @@ export default function Login() {
             <div className="input-field">
               <i className="fas fa-lock fa-lg"></i>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} // Cambiar el tipo de entrada según el estado de showPassword
                 placeholder="Contraseña"
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
                 title="La contraseña debe tener al menos 8 caracteres de longitud y contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (por ejemplo, !@#$%^&*)."
@@ -249,6 +263,17 @@ export default function Login() {
                   required: { value: true, message: "Contraseña Requerida" },
                 })}
               />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fas ${
+                    showPassword ? "fa-eye-slash" : "fa-eye"
+                  } fa-lg`}
+                ></i>
+              </button>
             </div>
             {renderErrorMessage("Contraseña")}
             <input type="submit" className="btn" value="Registrarse" />
