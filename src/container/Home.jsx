@@ -16,7 +16,7 @@ const Home = () => {
 
   return (
     <>
-      <h1>Juan</h1>
+      <h1>Bienvenido User</h1>
 
       <button onClick={handleSignOut}>Cerrar Sesion</button>
     </>

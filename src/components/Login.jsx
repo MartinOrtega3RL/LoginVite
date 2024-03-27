@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import "../assets/Style/Estilo.css";
 import logo from "../assets/log.svg";
-import reg from "../assets/register.jpg";
+import reg from "../assets/register.svg";
 import { useState } from "react";
 import auth0 from "auth0-js";
 import Ath0Config from "../Auth0Config";
@@ -23,13 +23,10 @@ export default function Login() {
   } = useForm();
 
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [errorEmail, setErrorEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar si la contraseña debe mostrarse
 
   const handleSignIn = (data) => {
     const { Email, Contraseña } = data;
-
-    console.log(Email);
 
     webAuth.login(
       {
@@ -39,7 +36,7 @@ export default function Login() {
       },
       (err) => {
         if (err) {
-          console.log("Error al iniciar Sesion en Auth0", err);
+          alert("Usuario o Contraseña no validos", err);
         } else {
           alert("Inicio de sesion Exitoso");
         }
@@ -61,8 +58,6 @@ export default function Login() {
   const handleSignUp = (data) => {
     const { Nombre, Apellido, Cuil, Telefono, Email, Contraseña } = data;
 
-    console.log(data);
-
     webAuth.signup(
       {
         email: Email,
@@ -79,9 +74,6 @@ export default function Login() {
       (err) => {
         if (err) {
           console.error("Error al registrar usuario en Auth0:", err);
-          if (err.code === "invalid_signup") {
-            setErrorEmail("Este email ya Existe");
-          }
         } else {
           alert("Usuario registrado con éxito en Auth0");
           resetSignUp(); // Resetear los datos del formulario de registro después de enviarlos
@@ -137,23 +129,6 @@ export default function Login() {
               </button>
             </div>
             <input type="submit" value="Iniciar Sesion" className="btn solid" />
-            <p className="social-text">
-              Utiliza alguna red social para ingresar
-            </p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-google"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div>
           </form>
 
           {/* ///////////////////////////////////////////////////// */}
@@ -277,23 +252,6 @@ export default function Login() {
             </div>
             {renderErrorMessage("Contraseña")}
             <input type="submit" className="btn" value="Registrarse" />
-            <p className="social-text">
-              o utiliza una red social para registrarte
-            </p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-google"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div>
           </form>
         </div>
       </div>
