@@ -5,6 +5,9 @@ import reg from "../assets/register.svg";
 import { useState } from "react";
 import auth0 from "auth0-js";
 import Ath0Config from "../Auth0Config";
+import axios from "axios";
+import { urlBackend } from "../config";
+
 
 const webAuth = new auth0.WebAuth(Ath0Config);
 
@@ -28,6 +31,13 @@ export default function Login() {
   const handleSignIn = (data) => {
     const { Email, Contraseña } = data;
 
+    axios.post(`${urlBackend}GetDataUser`,[Email,Contraseña])
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
     webAuth.login(
       {
         realm: "Usuarios-Login",

@@ -1,6 +1,8 @@
 import React from "react";
 import auth0 from "auth0-js";
 import Ath0Config from "../Auth0Config";
+import axios from "axios";
+import { urlBackend } from "../config";
 
 const webAuth = new auth0.WebAuth(Ath0Config);
 
@@ -13,6 +15,13 @@ const Home = () => {
     });
   };
 
+  axios.get(`${urlBackend}GetUserData`)
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 
   return (
     <>
