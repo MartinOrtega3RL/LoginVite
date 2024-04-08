@@ -8,8 +8,17 @@ import Ath0Config from "../Auth0Config";
 import axios from "axios";
 import { urlBackend } from "../config";
 
-
 const webAuth = new auth0.WebAuth(Ath0Config);
+
+webAuth.checkSession({}, (err, authResult) => {
+  if (err) {
+    // No hay sesión activa o ha ocurrido un error al verificar la sesión
+    console.log("No hay sesión activa");
+  } else {
+    // Hay una sesión activa
+    console.log("Sesión activa:", authResult);
+  }
+});
 
 export default function Login() {
   const {
@@ -29,20 +38,25 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar si la contraseña debe mostrarse
 
   const handleSignIn = (data) => {
-    const { Email, Contraseña } = data;
 
-    axios.post(`${urlBackend}GetDataUser`,[Email,Contraseña])
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    const dataToSend = {
+      Email: data.Email,
+      Contraseña : data.Contraseña
+    }
+
+    axios
+      .post(`${urlBackend}GetDataUser`, dataToSend)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     webAuth.login(
       {
         realm: "Usuarios-Login",
-        email: Email,
-        password: Contraseña,
+        email: data.Email,
+        password: data.Contraseña,
       },
       (err) => {
         if (err) {
