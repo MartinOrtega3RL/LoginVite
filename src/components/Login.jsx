@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import "../assets/Style/Estilo.css";
-import logo from "../assets/log.svg";
+import logo from "../assets/log.png";
 import reg from "../assets/register.svg";
 import { useState } from "react";
 import auth0 from "auth0-js";
@@ -96,8 +96,9 @@ export default function Login() {
         },
       },
       (err) => {
-        if (err) {
+        if (err=="invalid_signup") {
           console.error("Error al registrar usuario en Auth0:", err);
+          alert("Error al registrar usuario, Ya existe", err);
         } else {
           alert("Usuario registrado con éxito en Auth0");
           resetSignUp(); // Resetear los datos del formulario de registro después de enviarlos
